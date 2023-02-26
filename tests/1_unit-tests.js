@@ -20,14 +20,18 @@ suite('Unit Tests', function(){
         assert.isNotFalse(convertHandler.getNum(2))
         assert.isFalse(convertHandler.getNum(3/4))
       });
+
+      test('fractional number with a decimal input validation', function () {
+        assert.isFalse(convertHandler.getNum(2.3/3))
+        assert.isNotFalse(convertHandler.getNum(4))
+      });
+
+      test('double fraction input validation', function () {
+        assert.notEqual(convertHandler.getNum(2.3), 'Invalid Input Error')
+        assert.equal(convertHandler.getNum('4/3/4'), 'Invalid Input Error')
+      });
 });
 
-
-
-
-// convertHandler should correctly read a fractional input.
-// convertHandler should correctly read a fractional input with a decimal.
-// convertHandler should correctly return an error on a double-fraction (i.e. 3/2/3).
 // convertHandler should correctly default to a numerical input of 1 when no numerical input is provided.
 // convertHandler should correctly read each valid input unit.
 // convertHandler should correctly return an error for an invalid input unit.

@@ -5,7 +5,7 @@ const ConvertHandler = require('../controllers/convertHandler.js');
 let convertHandler = new ConvertHandler();
 
 suite('Unit Tests', function(){
-
+    
     test('whole number input validation', function () {
         assert.equal(convertHandler.getNum('2mil'), 2)
         assert.equal(convertHandler.getNum('100kg'), 100)
@@ -80,10 +80,3 @@ suite('Unit Tests', function(){
         assert.equal(convertHandler.convert(4/5,'MI'), 1.29)
       });
 });
-
-// convertHandler should correctly convert gal to L.
-// convertHandler should correctly convert L to gal.
-// convertHandler should correctly convert mi to km.
-// convertHandler should correctly convert km to mi.
-// convertHandler should correctly convert lbs to kg.
-// convertHandler should correctly convert kg to lbs.

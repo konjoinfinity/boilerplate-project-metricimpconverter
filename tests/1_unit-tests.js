@@ -45,10 +45,23 @@ suite('Unit Tests', function(){
         assert.equal(convertHandler.getUnit('L'), 'L')
         assert.equal(convertHandler.getUnit('LBS'), 'lbs')
       });
+
+      test('test for invalid input units', function () {
+        assert.equal(convertHandler.getUnit('CM'), undefined)
+        assert.equal(convertHandler.getUnit('RPM'), undefined)
+      });
+
+      test('test for conversion return units', function () {
+        assert.equal(convertHandler.getReturnUnit('KG'), 'lbs')
+        assert.equal(convertHandler.getReturnUnit('MI'), 'km')
+        assert.equal(convertHandler.getReturnUnit('KM'), 'mi')
+        assert.equal(convertHandler.getReturnUnit('GAL'), 'L')
+        assert.equal(convertHandler.getReturnUnit('L'), 'gal')
+        assert.equal(convertHandler.getReturnUnit('LBS'), 'kg')
+      });
+
 });
 
-// convertHandler should correctly read each valid input unit.
-// convertHandler should correctly return an error for an invalid input unit.
 // convertHandler should return the correct return unit for each valid input unit.
 // convertHandler should correctly return the spelled-out string unit for each valid input unit.
 // convertHandler should correctly convert gal to L.

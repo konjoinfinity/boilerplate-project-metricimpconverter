@@ -60,10 +60,27 @@ suite('Unit Tests', function(){
         assert.equal(convertHandler.getReturnUnit('LBS'), 'kg')
       });
 
+      test('test for units spelled out', function () {
+        assert.equal(convertHandler.spellOutUnit('KG'), 'Kilograms')
+        assert.equal(convertHandler.spellOutUnit('LBS'), 'Pounds')
+        assert.equal(convertHandler.spellOutUnit('KM'), 'Kilometers')
+        assert.equal(convertHandler.spellOutUnit('MI'), 'Miles')
+        assert.equal(convertHandler.spellOutUnit('GAL'), 'Gallons')
+        assert.equal(convertHandler.spellOutUnit('L'), 'Liters')
+      });
+
+      test('test for units spelled out', function () {
+        assert.equal(convertHandler.convert(2, 'KG'), 4.41)
+        assert.equal(convertHandler.convert(40, 'LBS'), 18.14)
+        assert.equal(convertHandler.convert(90, 'KM'), 55.92)
+        assert.equal(convertHandler.convert(100, 'MI'), 160.93)
+        assert.equal(convertHandler.convert(4,'GAL'), 15.14)
+        assert.equal(convertHandler.convert(5,'L'), 1.32)
+        assert.equal(convertHandler.convert(5.567,'KG'), 12.27)
+        assert.equal(convertHandler.convert(4/5,'MI'), 1.29)
+      });
 });
 
-// convertHandler should return the correct return unit for each valid input unit.
-// convertHandler should correctly return the spelled-out string unit for each valid input unit.
 // convertHandler should correctly convert gal to L.
 // convertHandler should correctly convert L to gal.
 // convertHandler should correctly convert mi to km.

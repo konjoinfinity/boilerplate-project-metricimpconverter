@@ -69,15 +69,55 @@ function ConvertHandler() {
     }
   };
 
-  this.spellOutUnit = function(unit) {
-    let result;
-    
-    return result;
+  this.spellOutUnit = function(initUnit) {
+    let unit = initUnit.toLowerCase();
+    switch (unit) {
+      case "km":
+        return "Kilometers";
+      case "gal":
+        return "Gallons";
+      case "lbs":
+        return "Pounds";
+      case "mi":
+        return "Miles";
+      case "l":
+        return "Liters";
+      case "kg":
+        return "Kilograms";
+      default:
+        return "Unknown";
+    }
   };
   
-  this.convert = function(initNum, initUnit, input) {
-    
-    return result;
+  this.convert = function(initNum, initUnit) {
+    let result;
+    let unit = initUnit.toLowerCase();
+    const galToL = 3.78541;
+    const lbsToKg = 0.453592;
+    const miToKm = 1.60934;
+    switch (unit) {
+      case "km":
+        result = initNum / miToKm;
+        break;
+      case "gal":
+        result = initNum * galToL;
+        break;
+      case "lbs":
+        result = initNum * lbsToKg;
+        break;
+      case "mi":
+        result = initNum * miToKm;
+        break;
+      case "l":
+        result = initNum / galToL;
+        break;
+      case "kg":
+        result = initNum / lbsToKg;
+        break;
+      default:
+        result = undefined;
+    }
+    return parseFloat(result.toFixed(2));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {

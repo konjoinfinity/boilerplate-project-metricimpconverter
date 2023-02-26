@@ -6,14 +6,25 @@ let convertHandler = new ConvertHandler();
 
 suite('Unit Tests', function(){
 
+    test('whole number input validation', function () {
+        assert.isTrue(convertHandler.getNum(2))
+        assert.isNotTrue(convertHandler.getNum(2.5))
+      });
+
+      test('decimal number input validation', function () {
+        assert.isNotFalse(convertHandler.getNum(2))
+        assert.isFalse(convertHandler.getNum(2.5))
+      });
+
+      test('fractional number input validation', function () {
+        assert.isNotFalse(convertHandler.getNum(2))
+        assert.isFalse(convertHandler.getNum(3/4))
+      });
 });
 
 
 
 
-
-// convertHandler should correctly read a whole number input.
-// convertHandler should correctly read a decimal number input.
 // convertHandler should correctly read a fractional input.
 // convertHandler should correctly read a fractional input with a decimal.
 // convertHandler should correctly return an error on a double-fraction (i.e. 3/2/3).

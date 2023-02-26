@@ -1,21 +1,52 @@
+const splitNumStr = (input) => {
+  let number = input.match(/[.\d\/]+/g) || ["1"];
+  let string = input.match(/[a-zA-Z]+/g)[0];
+  return [number[0], string];
+}
+const fractionCheck = (fraction) => {
+  let nums = fraction.split("/");
+  if (nums.length > 2) {
+    return false;
+  }
+  return nums;
+}
+
 function ConvertHandler() {
   
   this.getNum = function(input) {
-    let result;
-
-    let nums = String(input).match(/[0-9]+/g)
-    if(nums.length <=2){
-    result = Number.isInteger(Number(input))
-    } else {
-      result = 'Invalid Input Error'
-    }
-    return result;
+        let result = splitNumStr(input)[0];
+        let nums = fractionCheck(result);
+        if (!nums) {
+          return undefined;
+        }
+        let num1 = nums[0];
+        let num2 = nums[1] || "1";
+        result = parseFloat(num1) / parseFloat(num2);
+        if (isNaN(num1) || isNaN(num2)) {
+          return undefined;
+        }
+      console.log(result)
+        return result;
   };
   
   this.getUnit = function(input) {
-    let result;
-    
-    return result;
+    let result = splitNumStr(input)[1].toLowerCase();
+    switch (result) {
+      case "km":
+        return "km";
+      case "gal":
+        return "gal";
+      case "lbs":
+        return "lbs";
+      case "mi":
+        return "mi";
+      case "l":
+        return "L";
+      case "kg":
+        return "kg";
+      default:
+        return undefined;
+    }
   };
   
   this.getReturnUnit = function(initUnit) {

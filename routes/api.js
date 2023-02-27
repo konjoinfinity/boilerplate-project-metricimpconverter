@@ -1,26 +1,48 @@
 "use strict";
 
-const expect = require("chai").expect;
-const ConvertHandler = require("../controllers/convertHandler.js");
+var expect = require("chai").expect;
+var ConvertHandler = require("../controllers/convertHandler.js");
 
-module.exports = (app) => {
-  const convertHandler = new ConvertHandler();
+module.exports = function (app) {
+  var convertHandler = new ConvertHandler();
 
-  app.get("/api/convert", (req, res) => {
-    const input = req.query.input;
-    const initNum = convertHandler.getNum(input);
-    const initUnit = convertHandler.getUnit(input);
-    if (!initNum && !initUnit) return res.send("invalid number and unit");
-    else if (!initNum) return res.send("invalid number");
-    else if (!initUnit) return res.send("invalid unit");
-    const returnNum = convertHandler.convert(initNum, initUnit);
-    const returnUnit = convertHandler.getReturnUnit(initUnit);
-    const toString = convertHandler.getString(
+  app.route("/api/convert").get(function (req, res, next) {
+    var input = req.query.input;
+    var initNum = convertHandler.getNum(input);
+    var initUnit = convertHandler.getUnit(input);
+    if (initNum === "invalid number" && initUnit === "invalid unit") {
+      res.json("invalid number and unit");
+      return;
+    }
+    if (initNum === "invalid number") {
+      res.json("invalid number");
+      return;
+    }
+    if (initUnit === "invalid unit") {
+      res.json("invalid unit");
+      return;
+    }
+    var returnNum = convertHandler.convert(initNum, initUnit);
+
+    console.log(returnNum, "returnnum");
+    var returnUnit = convertHandler.getReturnUnit(initUnit);
+    console.log(returnUnit, "returnunit");
+    var spelledUnit = convertHandler.spellOutUnit(initUnit, returnUnit);
+
+    var toString = convertHandler.getString(
       initNum,
       initUnit,
       returnNum,
-      returnUnit
+      returnUnit,
+      spelledUnit
     );
-    res.json(toString);
+    console.log(toString);
+    res.json({
+      initNum: initNum,
+      initUnit: initUnit,
+      returnNum: returnNum,
+      returnUnit: returnUnit,
+      string: toString,
+    });
   });
 };

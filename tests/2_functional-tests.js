@@ -33,6 +33,7 @@ suite('Functional Tests', function() {
                 .end((err, res) => {
                   assert.equal(res.status, 200);
                   assert.equal(res.body.initUnit, undefined);
+                  assert.equal(res.text, 'invalid unit')
                   done();
                 });
               })
@@ -47,6 +48,7 @@ suite('Functional Tests', function() {
                 .end((err, res) => {
                   assert.equal(res.status, 200);
                   assert.equal(res.body.initUnit, undefined);
+                  assert.equal(res.text, 'invalid number')
                   done();
                 });
               })
@@ -61,6 +63,7 @@ suite('Functional Tests', function() {
                 .end((err, res) => {
                   assert.equal(res.status, 200);
                   assert.equal(res.body.initUnit, undefined);
+                  assert.equal(res.text, 'invalid number and unit')
                   done();
                 });
               })

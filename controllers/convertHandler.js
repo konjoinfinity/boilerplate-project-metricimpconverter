@@ -1,180 +1,130 @@
+function numberStringSplitter(input) {
+  let number = input.match(/[.\d\/]+/g) || ["1"];
+  let string = input.match(/[a-zA-Z]+/g)[0];
+
+  return [number[0], string];
+}
+function checkDiv(possibleFraction) {
+  let nums = possibleFraction.split("/");
+  if (nums.length > 2) {
+    return false;
+  }
+  return nums;
+}
 function ConvertHandler() {
   this.getNum = function (input) {
-    console.log(input);
-    const numRegex = /^[0-9./]{0,}/;
-    const numMatch = input.match(numRegex);
-
-    console.log(numMatch, "nummatch");
-    if (numMatch) {
-      const doubleFractionRegex = /\//g;
-      const checkDoubleFraction = numMatch[0].match(doubleFractionRegex);
-      console.log(checkDoubleFraction, "CHECKDOUBLEFRACTION");
-      if (checkDoubleFraction) {
-        if (checkDoubleFraction.length > 1) {
-          return "invalid number";
-        }
-      }
+    let result = numberStringSplitter(input)[0];
+    let nums = checkDiv(result);
+    if (!nums) {
+      return undefined;
     }
-
-    const num = eval(numMatch[0]);
-    console.log("num", num);
-    if (typeof num === "number") {
-      console.log("getnum is returning", num);
-      return num;
+    let num1 = nums[0];
+    let num2 = nums[1] || "1";
+    result = parseFloat(num1) / parseFloat(num2);
+    if (isNaN(num1) || isNaN(num2)) {
+      return undefined;
     }
-    if (typeof num === "undefined") {
-      return 1;
-    }
-    return "invalid number";
+    return result;
   };
 
   this.getUnit = function (input) {
-    const valRegex = /gal|lbs|mi|km|l|kg/i;
-    const valMatch = input.match(valRegex);
-    console.log(valMatch);
-    const val = (() => {
-      if (valMatch) {
-        return valMatch[0];
-      }
-    })();
-
-    if (val) {
-      console.log("getunit val returning", val);
-      return val;
+    let result = numberStringSplitter(input)[1].toLowerCase();
+    switch (result) {
+      case "km":
+        return "km";
+      case "gal":
+        return "gal";
+      case "lbs":
+        return "lbs";
+      case "mi":
+        return "mi";
+      case "l":
+        return "L";
+      case "kg":
+        return "kg";
+      default:
+        return undefined;
     }
-    return "invalid unit";
   };
 
   this.getReturnUnit = function (initUnit) {
-    const galRegex = /gal/i;
-    const lbsRegex = /lbs/i;
-    const kgRegex = /kg/i;
-    const miRegex = /mi/i;
-    const kmRegex = /km/i;
-    const lRegex = /l/i;
+    let unit = initUnit.toLowerCase();
 
-    const checkRegex = (reg) => {
-      if (initUnit.match(reg)) {
-        return initUnit.match(reg)[0];
-      }
-    };
-
-    const unit = (() => {
-      if (initUnit === checkRegex(galRegex)) {
-        return "l";
-      }
-      if (initUnit === checkRegex(lRegex)) {
-        return "gal";
-      }
-      if (initUnit === checkRegex(lbsRegex)) {
-        return "kg";
-      }
-      if (initUnit === checkRegex(kgRegex)) {
-        return "lbs";
-      }
-      if (initUnit === checkRegex(miRegex)) {
-        return "km";
-      }
-      if (initUnit === checkRegex(kmRegex)) {
+    switch (unit) {
+      case "km":
         return "mi";
-      }
-    })();
-
-    return unit;
+      case "gal":
+        return "L";
+      case "lbs":
+        return "kg";
+      case "mi":
+        return "km";
+      case "l":
+        return "gal";
+      case "kg":
+        return "lbs";
+      default:
+        return undefined;
+    }
   };
 
-  this.spellOutUnit = function (initUnit, returnUnit) {
-    const galRegex = /gal/i;
-    const lbsRegex = /lbs/i;
-    const kgRegex = /kg/i;
-    const miRegex = /mi/i;
-    const kmRegex = /km/i;
-    const lRegex = /l/i;
+  this.spellOutUnit = function (initUnit) {
+    let unit = initUnit.toLowerCase();
 
-    const checkRegex = (unit, reg) => {
-      if (unit) {
-        if (unit.match(reg)) {
-          return unit.match(reg)[0];
-        }
-      }
-    };
-
-    const spellUnit = (unit) => {
-      if (unit === checkRegex(unit, galRegex)) {
-        return "gallons";
-      }
-      if (unit === checkRegex(unit, lRegex)) {
-        return "liters";
-      }
-      if (unit === checkRegex(unit, lbsRegex)) {
-        return "pounds";
-      }
-      if (unit === checkRegex(unit, kgRegex)) {
-        return "kilograms";
-      }
-      if (unit === checkRegex(unit, miRegex)) {
-        return "miles";
-      }
-      if (unit === checkRegex(unit, kmRegex)) {
+    switch (unit) {
+      case "km":
         return "kilometers";
-      }
-    };
-
-    const spelledOutUnits = {
-      initSpelled: spellUnit(initUnit),
-      returnSpelled: spellUnit(returnUnit),
-    };
-    //console.log(spelledOutUnits)
-    return spelledOutUnits;
+      case "gal":
+        return "gallons";
+      case "lbs":
+        return "pounds";
+      case "mi":
+        return "miles";
+      case "l":
+        return "liters";
+      case "kg":
+        return "kilograms";
+      default:
+        return "don't know";
+    }
   };
 
   this.convert = function (initNum, initUnit) {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
-    const miToKm = 1.609344;
+    const miToKm = 1.60934;
+    let unit = initUnit.toLowerCase();
+    let result;
 
-    const galRegex = /gal/i;
-    const lRegex = /l/i;
-    const lbsRegex = /lbs/i;
-    const kgRegex = /kg/i;
-    const miRegex = /mi/i;
-    const kmRegex = /km/i;
-
-    const checkRegex = (reg) => {
-      if (initUnit.match(reg)) {
-        return initUnit.match(reg)[0];
-      }
-    };
-    //console.log(initUnit.match(galRegex), "match galregex")
-    if (initUnit === checkRegex(galRegex)) {
-      return Math.round(initNum * galToL * 100000) / 100000;
+    switch (unit) {
+      case "km":
+        result = initNum / miToKm;
+        break;
+      case "gal":
+        result = initNum * galToL;
+        break;
+      case "lbs":
+        result = initNum * lbsToKg;
+        break;
+      case "mi":
+        result = initNum * miToKm;
+        break;
+      case "l":
+        result = initNum / galToL;
+        break;
+      case "kg":
+        result = initNum / lbsToKg;
+        break;
+      default:
+        result = undefined;
     }
-    if (initUnit === checkRegex(lRegex)) {
-      return Math.round((initNum / galToL) * 100000) / 100000;
-    }
-    if (initUnit === checkRegex(lbsRegex)) {
-      return Math.round(initNum * lbsToKg * 100000) / 100000;
-    }
-    if (initUnit === checkRegex(kgRegex)) {
-      return Math.round((initNum / lbsToKg) * 100000) / 100000;
-    }
-    if (initUnit === checkRegex(miRegex)) {
-      return Math.round(initNum * miToKm * 100000) / 100000;
-    }
-    if (initUnit === checkRegex(kmRegex)) {
-      return Math.round((initNum / miToKm) * 100000) / 100000;
-    }
+    return parseFloat(result.toFixed(5));
   };
 
-  this.getString = function (
-    initNum,
-    initUnit,
-    returnNum,
-    returnUnit,
-    spelledUnit
-  ) {
-    console.log(spelledUnit);
-    return `${initNum} ${spelledUnit.initSpelled} converts to ${returnNum} ${spelledUnit.returnSpelled}`;
+  this.getString = function (initNum, initUnit, returnNum, returnUnit) {
+    return `${initNum} ${this.spellOutUnit(
+      initUnit
+    )} converts to ${returnNum} ${this.spellOutUnit(returnUnit)}`;
   };
 }
 
